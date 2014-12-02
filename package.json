@@ -1,0 +1,30 @@
+{
+  "name": "express-ifttt-webhook",
+  "version": "0.1.0",
+  "description": "An Exress middleware for creating custom 'webhooks' for IFTTT.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/b00giZm/express-ifttt-webhook.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha"
+  },
+  "keywords": [
+    "express",
+    "middleware",
+    "ifttt"
+  ],
+  "author": "Pascal Cremer <b00gizm@gmail.com> (http://codenugget.co)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/b00giZm/express-ifttt-webhook/issues"
+  },
+
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "express": "^4.10.4",
+    "mocha": "^2.0.1",
+    "supertest": "^0.15.0"
+  }
+}
