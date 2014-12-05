@@ -20,11 +20,15 @@
   "bugs": {
     "url": "https://github.com/b00giZm/express-ifttt-webhook/issues"
   },
-
   "devDependencies": {
     "chai": "^1.10.0",
     "express": "^4.10.4",
     "mocha": "^2.0.1",
     "supertest": "^0.15.0"
+  },
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "multiline": "^1.0.1",
+    "xml2js": "^0.4.4"
   }
 }
