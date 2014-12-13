@@ -1,10 +1,25 @@
-var chai     = require('chai');
-var express  = require('express');
-var request  = require('supertest');
-var fixtures = require('./fixtures');
-var should   = chai.should();
+var chai       = require('chai');
+var express    = require('express');
+var sinon      = require('sinon');
+var proxyquire = require('proxyquire');
+var request    = require('supertest');
+var fixtures   = require('./fixtures');
+var should     = chai.should();
 
-var webhook  = require('../lib/webhook');
+// Sinon stubs
+var requestStub = sinon.stub();
+requestStub.returns({
+  write: sinon.stub(),
+  end: sinon.stub()
+});
+
+var httpStub = {
+  request: requestStub
+};
+
+var webhook = proxyquire('../lib/webhook', {
+  'http': httpStub
+});
 
 describe('webhook', function() {
 
@@ -110,7 +125,51 @@ describe('webhook', function() {
     });
 
     describe('IFTTT request', function() {
-      // describe('with default middleware');
+      describe('with default middleware', function() {
+        beforeEach(function() {
+          this.app = express();
+          this.app.use(webhook());
+        });
+
+        it('should make HTTP POST request to a given URL in categories array', function(done) {
+          var agent = request.agent(this.app);
+
+          var xmlPayload = fixtures.newPostRequest('A title', 'A body', ['http://example.org'], ['one', 'two', 'three']);
+
+          var postData = 'username=johnedoe&password=s3cr3t&title=A%20title&description=A%20body&tags=one&tags=two&tags=three';
+
+          agent
+            .post('/xmlrpc.php')
+            .set({
+              'Content-Type'   : 'text/xml',
+              'Accept'         : 'text/xml',
+              'Accept-Charset' : 'UTF8'
+            })
+            .send(xmlPayload)
+            .expect(200)
+            .expect('content-type', /text\/xml/, function() {
+              requestStub.calledOnce.should.be.true();
+              requestStub
+                .calledWith({
+                  hostname: 'example.org',
+                  port: null,
+                  path: '/',
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Length': postData.length
+                  }
+                })
+                .should.be.true()
+              ;
+              requestStub().write.calledOnce.should.be.true();
+              requestStub().write.calledWith(postData).should.be.true();
+              
+              done();
+            })
+          ;
+        });
+      });
 
       describe('with middleware callback', function() {
         beforeEach(function() {
