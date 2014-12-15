@@ -136,7 +136,7 @@ describe('webhook', function() {
 
           var xmlPayload = fixtures.newPostRequest('A title', 'A body', ['http://example.org'], ['one', 'two', 'three']);
 
-          var postData = 'username=johnedoe&password=s3cr3t&title=A%20title&description=A%20body&tags=one&tags=two&tags=three';
+          var postData = 'username=johndoe&password=s3cr3t&title=A%20title&description=A%20body&tags=one&tags=two&tags=three';
 
           agent
             .post('/xmlrpc.php')
@@ -164,7 +164,7 @@ describe('webhook', function() {
               ;
               requestStub().write.calledOnce.should.be.true();
               requestStub().write.calledWith(postData).should.be.true();
-              
+
               done();
             })
           ;
@@ -179,7 +179,7 @@ describe('webhook', function() {
         it('should call the callback', function(done) {
           this.app.use(webhook(function(json, done) {
             json.should.eql({
-              username    : 'johnedoe',
+              username    : 'johndoe',
               password    : 's3cr3t',
               title       : 'A title',
               description : 'A body',
@@ -210,7 +210,7 @@ describe('webhook', function() {
         it('should try to parse JSON object from body', function(done) {
           this.app.use(webhook(function(json, done) {
             json.should.eql({
-              username    : 'johnedoe',
+              username    : 'johndoe',
               password    : 's3cr3t',
               title       : 'A title',
               description : { foo: 123, bar: 234 },

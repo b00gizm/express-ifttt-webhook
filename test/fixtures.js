@@ -71,7 +71,7 @@ module.exports.newPostRequest = function(title, body, categories, keywords) {
         </param>
         <param>
           <value>
-            <string>johnedoe</string>
+            <string>johndoe</string>
           </value>
         </param>
         <param>
