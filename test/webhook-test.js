@@ -239,8 +239,141 @@ describe('webhook', function() {
         });
       });
 
-      // describe('with middleware auth');
-      //
+      describe('with middleware auth', function() {
+        beforeEach(function() {
+          this.app = express();
+        });
+
+        it('should receive username and password in auth callback', function(done) {
+          this.app.use(webhook(function(username, password, done) {
+            username.should.eql('johndoe');
+            password.should.eql('s3cr3t');
+
+            done(null, true);
+          }, function(json, done) {
+            json.should.eql({
+              title       : 'A title',
+              description : { foo: 123, bar: 234 },
+              categories  : [ 'one', 'two', 'three' ],
+              tags        : [ 'four', 'five', 'six' ]
+            });
+
+            done();
+          }));
+
+          var agent = request.agent(this.app);
+
+          var xmlPayload = fixtures.newPostRequest('A title', '{"foo": 123, "bar": 234}', ['one', 'two', 'three'], ['four', 'five', 'six']);
+
+          agent
+            .post('/xmlrpc.php')
+            .set({
+              'Content-Type'   : 'text/xml',
+              'Accept'         : 'text/xml',
+              'Accept-Charset' : 'UTF8'
+            })
+            .send(xmlPayload)
+            .expect(200)
+            .expect('content-type', /text\/xml/, done)
+          ;
+        });
+
+        it('should pass a validated user to the callback', function(done) {
+          this.app.use(webhook(function(username, password, done) {
+            username.should.eql('johndoe');
+            password.should.eql('s3cr3t');
+
+            done(null, { id: 123, username: 'johndoe', email: 'johndoe@example.org' });
+          }, function(json, done) {
+            json.should.eql({
+              user        : { id: 123, username: 'johndoe', email: 'johndoe@example.org' },
+              title       : 'A title',
+              description : { foo: 123, bar: 234 },
+              categories  : [ 'one', 'two', 'three' ],
+              tags        : [ 'four', 'five', 'six' ]
+            });
+
+            done();
+          }));
+
+          var agent = request.agent(this.app);
+
+          var xmlPayload = fixtures.newPostRequest('A title', '{"foo": 123, "bar": 234}', ['one', 'two', 'three'], ['four', 'five', 'six']);
+
+          agent
+            .post('/xmlrpc.php')
+            .set({
+              'Content-Type'   : 'text/xml',
+              'Accept'         : 'text/xml',
+              'Accept-Charset' : 'UTF8'
+            })
+            .send(xmlPayload)
+            .expect(200)
+            .expect('content-type', /text\/xml/, done)
+          ;
+        });
+
+        it('should return error response if it fails authentication', function(done) {
+          this.app.use(webhook(function(username, password, done) {
+            username.should.eql('johndoe');
+            password.should.eql('s3cr3t');
+
+            done(null, false);
+          }, function(json, done) {
+            // This callback should not be called
+            (true).should.be.false();
+
+            done();
+          }));
+
+          var agent = request.agent(this.app);
+
+          var xmlPayload = fixtures.newPostRequest('A title', '{"foo": 123, "bar": 234}', ['one', 'two', 'three'], ['four', 'five', 'six']);
+
+          agent
+            .post('/xmlrpc.php')
+            .set({
+              'Content-Type'   : 'text/xml',
+              'Accept'         : 'text/xml',
+              'Accept-Charset' : 'UTF8'
+            })
+            .send(xmlPayload)
+            .expect(404)
+            .expect('content-type', /text\/xml/, done)
+          ;
+        });
+
+        it('should return error response if there was an error during authentication', function(done) {
+          this.app.use(webhook(function(username, password, done) {
+            username.should.eql('johndoe');
+            password.should.eql('s3cr3t');
+
+            done(new Error('KABOOM!'));
+          }, function(json, done) {
+            // This callback should not be called
+            (true).should.be.false();
+
+            done();
+          }));
+
+          var agent = request.agent(this.app);
+
+          var xmlPayload = fixtures.newPostRequest('A title', '{"foo": 123, "bar": 234}', ['one', 'two', 'three'], ['four', 'five', 'six']);
+
+          agent
+            .post('/xmlrpc.php')
+            .set({
+              'Content-Type'   : 'text/xml',
+              'Accept'         : 'text/xml',
+              'Accept-Charset' : 'UTF8'
+            })
+            .send(xmlPayload)
+            .expect(404)
+            .expect('content-type', /text\/xml/, done)
+          ;
+        });
+      });
+
       // describe('with middleware categories');
       //
       // describe('with middleware auth and categories');
