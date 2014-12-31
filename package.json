@@ -29,6 +29,7 @@
     "supertest": "^0.15.0"
   },
   "dependencies": {
+    "async": "^0.9.0",
     "lodash": "^2.4.1",
     "multiline": "^1.0.1",
     "validator": "^3.22.2",
