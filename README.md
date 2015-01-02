@@ -50,7 +50,7 @@ This default middleware is pretty basic, but might be sufficient for really simp
 
 Now, hop over to IFTTT and create a new Wordpress channel:
 
-![](http://i.imgur.com/3SnxJIu.png)
+![](http://i.imgur.com/BSS22t1.png)
 
 The URL has to contain a publicly accessible domain. If you want to just toy around with the middleware, you can use `example/server.js` and host it on [Heroku](https://www.heroku.com) ([instructions](https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction)).
 
@@ -167,7 +167,7 @@ Here, when the recipe is triggered, the `twitter` callback will be called.
 
 If you want to call multiple callback categories at once, we got you covered as well:
 
-![](http://i.imgur.com/3rBF41T.png)
+![](http://i.imgur.com/3JFhbCH.png)
 
 When triggered, both `twitter` and `instagram` callbacks will be called in parallel.
 
