@@ -44,7 +44,7 @@ app.use(webhook());
 
 **Boom. You're done!**
 
-This default middleware is pretty basic, but might be sufficient for really basic stuff. It's like an API proxy which forwards data to a specified API endpoint.
+This default middleware is pretty basic, but might be sufficient for really simple requirements. It's like an API proxy which forwards data to a specified API endpoint.
 
 Now, hop over to IFTTT and create a new Wordpress channel:
 
