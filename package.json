@@ -1,7 +1,7 @@
 {
   "name": "express-ifttt-webhook",
   "version": "0.2.1",
-  "description": "An Exress middleware for creating custom 'webhooks' for IFTTT.com",
+  "description": "A middleware to plug your Express app into IFTTT.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/b00giZm/express-ifttt-webhook.git"
@@ -13,7 +13,8 @@
   "keywords": [
     "express",
     "middleware",
-    "ifttt"
+    "ifttt",
+    "webhook"
   ],
   "author": "Pascal Cremer <b00gizm@gmail.com> (http://codenugget.co)",
   "license": "MIT",
