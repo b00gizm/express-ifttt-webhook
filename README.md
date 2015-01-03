@@ -3,7 +3,7 @@ express-ifttt-webhook
 
 [![npm](https://img.shields.io/npm/v/express-ifttt-webhook.svg)](https://www.npmjs.com/package/express-ifttt-webhook) [![Travis](https://img.shields.io/travis/b00giZm/express-ifttt-webhook.svg)](https://travis-ci.org/b00giZm/express-ifttt-webhook)
 
-We all love and use [IFTTT](https://ifttt.com) to automate our digital life. As a developer, I have always wanted IFTTT to be a little more flexibel and open for custom webhooks and services. This might come (as a premium feature?) one day, but for now, there is **express-ifttt-webhook**.
+We all love and use [IFTTT](https://ifttt.com) to automate our digital life. As a developer, I have always wanted IFTTT to be a little more flexible and open for custom webhooks and services. This might come (as a premium feature?) one day, but for now, there is **express-ifttt-webhook**.
 
 What is it all about?
 ---------------------
