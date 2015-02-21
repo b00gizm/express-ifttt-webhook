@@ -1,6 +1,6 @@
 {
   "name": "express-ifttt-webhook",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A middleware to plug your Express app into IFTTT.com",
   "repository": {
     "type": "git",
