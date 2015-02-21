@@ -111,13 +111,22 @@ In our case, `json` will contain the following data:
 
 ### Special case: Value transformer
 
-If you still want to forward data to another URL, you can use the custom callback as value transformer:
+Sometimes, you might still want to forward data to a certain URL along with some data, which you want to generate at runtime (e.g. signatures). In those cases, just do the work inside the callback function and hand the `done` callback a new object containing a `url` property and anything else you might want to send along with it:
 
 
 ```javascript
+function mySignatureGenerator(json) {
+  // ...
+
+  return signature;
+}
+
 app.use(webhook(function(json, done) {
-  // transform data
-  var out = getOutputObjectFromInput(json);
+  var out = {
+    foo : 123,
+    bar : 234,
+    sig : mySignatureGenerator(json);
+  };
 
   // specify URL to forward your transformed data to
   out.url = 'http://api.example.org';
@@ -177,6 +186,12 @@ Authentication
 For serious use cases, you might want to protect your app from outside abuse. So, if you want, you can supply your own authentication (auth) callback:
 
 ```javascript
+function getUserFromDatabase(username, password, done) {
+  //  retrieve user from database
+
+  return done(null, user);
+}
+
 app.use(webhook(
   function(username, password, done) {
     return getUserFromDatabase(username, password, function(err, user) {
@@ -228,6 +243,12 @@ With **express-ifttt-webhook**, this is pretty easy to do:
 ![](http://i.imgur.com/Y0pbBDI.png)
 
 This recipe is triggered every time I'm entering or exiting my home (based on my iPhone's GPS). It is connected to my [RaspberryPi](http://www.raspberrypi.org/), which runs a small Express app that pauses all my Sonos speakers, when it receives the `exit` event. Pretty neat, huh? ;)
+
+*Update 02/15/2015*
+
+IFTTT recently [released a new suite of apps](http://blog.ifttt.com/post/111467477713/introducing-do-a-new-class-of-apps-by-ifttt) for iOS and Android, each one dedicated to trigger actions for one certain event. One of those, called [DO Button](https://ifttt.com/products/do/button), which basically triggers actions on pressing one huge button, perfectly fits with this middleware. So, instead of turning off my Sonos via geo fence, I can alternatively just hit the button and trigger it from just anywhere in the world.
+
+![](http://i.imgur.com/stPrCyv.png)
 
 Maintainer
 ----------
