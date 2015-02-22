@@ -233,6 +233,29 @@ app.use(webhook({
 }));
 ```
 
+Example: IFTTT Chatter
+----------------------
+
+This is [a sample app](https://ifttt-chatter.herokuapp.com) ([Source](https://github.com/b00giZm/ifttt-chatter)) built with express-ifttt-webhook to display text messages pushed to IFTTT in real time though web sockets with just a minimal amount of code:
+
+```javascript
+app.use(webhook(function(json, done) {
+
+  io.emit('message', {
+    id       : uuid.v1(),
+    nickname : json.username,
+    text     : lodash.isString(json.description) ? json.description : JSON.stringify(json.description)
+  });
+
+  done();
+}));
+```
+
+It works great with the newly released [Do Note app](https://ifttt.com/products/do/note) for [iOS](https://itunes.apple.com/us/app/do-note-by-ifttt/id905998379) and [Android](https://play.google.com/store/apps/details?id=com.ifttt.donote).
+
+Website: [https://ifttt-chatter.herokuapp.com](https://ifttt-chatter.herokuapp.com)
+Source: [https://github.com/b00giZm/ifttt-chatter](https://github.com/b00giZm/ifttt-chatter)
+
 Real world use case
 -------------------
 
